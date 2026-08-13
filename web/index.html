@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ENSPY • Centre d’administration</title>
+<meta name="description" content="Centre d'administration académique ENSPY"><meta name="app-version" content="PATCH11-FORUM-ADMIN-PRO">
+<link rel="icon" href="/favicon.svg">
+<style>
+:root{--orange:#f36b21;--orange2:#c94e0d;--ink:#17120f;--muted:#756a63;--cream:#fff9f5;--surface:#fff;--line:#eadfd7;--nav:#161b24;--success:#16835b;--danger:#c53c35;--shadow:0 12px 32px rgba(34,24,18,.08)}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink);background:var(--cream);position:relative}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:url("/assets/enspy-logo.jpg") center 54%/520px auto no-repeat;opacity:.045;filter:saturate(.85)}
+#root{position:relative;z-index:1;min-height:100vh}
+.brand-logo{width:64px;height:64px;object-fit:cover;border-radius:50%;border:1px solid #f1ddd0;box-shadow:0 6px 18px rgba(34,24,18,.10);background:#fff}
+.side-logo{width:40px;height:40px;object-fit:cover;border-radius:50%;background:#fff;border:1px solid #ffffff30}
+.login-card{position:relative;overflow:hidden}
+.login-card::after{content:"";position:absolute;right:-100px;bottom:-120px;width:280px;height:280px;background:url("/assets/enspy-logo.jpg") center/contain no-repeat;opacity:.055;pointer-events:none}
+.login-card>*{position:relative;z-index:1}
+button,input,select,textarea{font:inherit}button{cursor:pointer}.hidden{display:none!important}
+.login{min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at top right,#ffe8d9 0,transparent 38%),var(--cream)}
+.login-card{width:min(430px,100%);background:#fff;border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow);padding:34px}.brand{display:flex;align-items:center;gap:12px}.brand-mark{width:48px;height:48px;border-radius:16px;background:var(--orange);display:grid;place-items:center;color:#fff;font-weight:800}.brand h1{font-size:18px;margin:0}.brand span{display:block;font-size:12px;color:var(--muted);margin-top:3px}.login h2{font-size:28px;margin:28px 0 7px}.login p{color:var(--muted);margin:0 0 24px}.field{margin:13px 0}.field label{display:block;font-size:12px;font-weight:700;margin:0 0 7px}.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);border-radius:13px;padding:12px 13px;background:#fff;outline:none}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--orange);box-shadow:0 0 0 3px #f36b2118}.primary{border:0;border-radius:13px;background:var(--orange);color:#fff;padding:12px 16px;font-weight:750}.secondary{border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);padding:10px 14px;font-weight:650}.danger{border:0;border-radius:12px;background:#fff0ef;color:var(--danger);padding:9px 12px;font-weight:700}.small{font-size:12px;color:var(--muted)}
+.app{min-height:100vh;display:flex}.sidebar{z-index:2;width:250px;background:var(--nav);color:#fff;position:fixed;inset:0 auto 0 0;padding:20px 14px;display:flex;flex-direction:column}.side-brand{display:flex;gap:11px;align-items:center;padding:7px 10px 22px;border-bottom:1px solid #ffffff16}.side-brand .brand-mark{width:40px;height:40px;border-radius:13px}.side-brand strong{font-size:16px}.side-brand span{display:block;color:#aeb5c0;font-size:11px;margin-top:2px}.nav{padding-top:18px;display:grid;gap:5px}.nav button{border:0;background:transparent;color:#b9c0ca;text-align:left;border-radius:12px;padding:12px 13px;display:flex;align-items:center;gap:11px;font-weight:650}.nav button:hover,.nav button.active{background:#ffffff10;color:#fff}.nav button.active{box-shadow:inset 3px 0 var(--orange)}.side-bottom{margin-top:auto;border-top:1px solid #ffffff16;padding:15px 9px 0}.user-mini{display:flex;gap:10px;align-items:center}.avatar{width:38px;height:38px;border-radius:50%;background:#2c3441;display:grid;place-items:center;font-weight:800}.user-mini small{color:#aeb5c0}.logout{width:100%;margin-top:12px;background:#ffffff08;color:#cdd3db;border:1px solid #ffffff12;padding:10px;border-radius:11px}
+.main{margin-left:250px;width:calc(100% - 250px);padding:28px 32px}.topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:24px}.eyebrow{color:var(--orange2);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em}.title{font-size:30px;margin:5px 0 4px}.subtitle{color:var(--muted);margin:0}.actions{display:flex;gap:9px;flex-wrap:wrap}.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.stat{background:#fff;border:1px solid var(--line);border-radius:19px;padding:18px;box-shadow:0 5px 20px #2a1d1507}.stat .icon{width:40px;height:40px;border-radius:13px;background:#fff0e8;color:var(--orange);display:grid;place-items:center;font-weight:800}.stat b{font-size:26px;display:block;margin-top:13px}.stat span{font-size:12px;color:var(--muted)}.panel{background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:0 5px 20px #2a1d1507}.panel-head{padding:17px 19px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px}.panel-head h3{margin:0;font-size:16px}.panel-body{padding:18px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.section{margin-top:18px}.table{width:100%;border-collapse:collapse}.table th,.table td{padding:12px 10px;text-align:left;border-bottom:1px solid #f0e8e2;font-size:13px}.table th{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}.badge{display:inline-flex;align-items:center;padding:5px 8px;border-radius:999px;background:#f5eee9;color:#66574e;font-size:11px;font-weight:750}.badge.orange{background:#fff0e8;color:var(--orange2)}.badge.green{background:#eaf8f1;color:var(--success)}.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:14px}.toolbar input,.toolbar select{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff}.level-tabs{display:flex;gap:8px;margin-bottom:14px}.tab{padding:9px 13px;border:1px solid var(--line);background:#fff;border-radius:12px;font-weight:700}.tab.active{background:var(--orange);border-color:var(--orange);color:#fff}.ue-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.ue{border:1px solid var(--line);border-radius:16px;padding:15px;background:linear-gradient(180deg,#fff,#fffaf7)}.ue code{color:var(--orange2);font-weight:800;font-size:11px}.ue strong{display:block;margin:7px 0 5px}.ue small{color:var(--muted)}.resource-row{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid var(--line);border-radius:14px;padding:13px;margin-bottom:9px}.resource-row strong{font-size:13px}.resource-row small{display:block;color:var(--muted);margin-top:3px}.modal{position:fixed;inset:0;background:#17120f88;display:grid;place-items:center;padding:20px;z-index:20}.modal-card{width:min(650px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:22px;box-shadow:0 25px 70px #0004}.modal-head{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between}.modal-head button{border:0;background:transparent;font-size:22px}.modal-body{padding:20px}.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}.toast{position:fixed;right:24px;bottom:24px;background:#1b201f;color:#fff;padding:12px 15px;border-radius:13px;box-shadow:var(--shadow);z-index:50}.empty{padding:30px;text-align:center;color:var(--muted)}
+.curriculum-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0 18px}
+.curriculum-summary>div{padding:13px 15px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(180deg,#fff,#fffaf7)}
+.curriculum-summary span{display:block;color:var(--muted);font-size:11px;margin-bottom:4px}.curriculum-summary strong{font-size:15px}
+.professional-ue-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.professional-ue{position:relative;min-height:170px;padding:18px}.ue-number{position:absolute;top:14px;right:15px;color:#d7c7bd;font-size:12px;font-weight:800}.professional-ue code{font-size:11px}.professional-ue strong{font-size:16px;max-width:82%;line-height:1.35}.ue-meta{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 13px}.ue-meta span{font-size:11px;color:var(--muted);background:#f8f1ec;padding:5px 8px;border-radius:999px}.professional-ue .secondary{font-size:12px}
+.next-semester-note{margin-top:16px;padding:12px 14px;border-radius:13px;background:#fff7f1;border:1px solid #f1ddd0;color:var(--muted);font-size:12px}
+.notification-card{border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:10px;background:linear-gradient(180deg,#fff,#fffaf7)}.notification-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.attachment-missing{margin-top:9px;padding:10px 12px;border:1px solid #f0d4aa;background:#fff8ea;color:#8a5a15;border-radius:12px;font-size:12px}.notif-media-wrap{margin-top:8px}
+.notification-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.notification-top small{display:block;color:var(--muted);font-size:11px;margin-top:4px}.notification-card p{color:var(--muted);line-height:1.6;margin:10px 0}.notif-media-image{display:block;width:min(520px,100%);max-height:320px;object-fit:cover;border-radius:13px;border:1px solid var(--line)}.notif-media-video{display:block;width:min(620px,100%);max-height:360px;border-radius:13px;background:#111}.notif-file{display:inline-block;margin-top:4px}
+@media(max-width:1050px){.cards{grid-template-columns:repeat(2,1fr)}.ue-grid{grid-template-columns:repeat(2,1fr)}.curriculum-summary{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:1050px){.cards{grid-template-columns:repeat(2,1fr)}.ue-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:760px){.sidebar{position:static;width:100%;height:auto}.app{display:block}.main{margin:0;width:100%;padding:20px}.nav{grid-template-columns:repeat(3,1fr)}.side-bottom{display:none}.cards,.grid2,.two,.ue-grid,.curriculum-summary{grid-template-columns:1fr}.topbar{display:block}.actions{margin-top:12px}}
+
+.forum-toolbar,.event-toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.forum-layout{display:grid;grid-template-columns:minmax(300px,.82fr) minmax(520px,1.18fr);gap:16px;align-items:start}
+.forum-list,.event-list{display:grid;gap:10px;align-self:start;min-width:0}
+.forum-card,.event-card{border:1px solid var(--line);border-radius:18px;background:#fff;padding:16px;box-shadow:0 6px 20px rgba(34,24,18,.05)}
+.forum-card{cursor:pointer;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;align-self:start;min-height:0}
+.forum-card:hover{transform:translateY(-1px);box-shadow:0 10px 28px rgba(34,24,18,.09);border-color:#e8c7b6}
+.forum-card.selected{outline:2px solid #f6b28b;outline-offset:0;background:#fffdfb}
+.forum-card-title{display:block;font-size:15px;line-height:1.35;margin-bottom:4px}
+.forum-card-excerpt{color:var(--muted);line-height:1.45;margin:6px 0 10px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.forum-meta,.event-meta{display:flex;gap:7px;flex-wrap:wrap;align-items:center;color:var(--muted);font-size:12px}
+.forum-badge{display:inline-flex;align-items:center;border:1px solid var(--line);background:#fff8f3;border-radius:999px;padding:5px 9px;font-size:11px;font-weight:700}
+.forum-detail{position:sticky;top:20px;height:calc(100vh - 180px);max-height:none;min-height:460px;overflow:hidden;display:flex;flex-direction:column}
+.forum-detail>.panel-head{flex:0 0 auto}
+.forum-detail>.panel-body{overflow:auto;min-height:0;scroll-behavior:smooth}
+.forum-detail .panel-head h3{font-size:17px;line-height:1.35}
+.forum-answer{border:1px solid var(--line);border-radius:14px;padding:12px;background:#fffaf7;margin-top:9px}
+.forum-answer:hover{border-color:#ead0c0}
+.forum-attachment{display:block;border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-top:8px;text-decoration:none;color:var(--ink);background:#fff}
+.forum-attachment:hover{border-color:#f2b18c;background:#fff7f1}
+.forum-preview{width:100%;max-height:280px;object-fit:contain;border-radius:12px;background:#17120f;margin-top:8px}
+.forum-admin-kpis{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 10px}
+.forum-admin-kpis strong{font-size:13px}.forum-admin-kpis span{font-size:12px;color:var(--muted)}
+.forum-reply-box{position:sticky;bottom:0;background:linear-gradient(180deg,#fffaf7 0,#fff 24%);padding-top:12px}
+.event-card{border:1px solid var(--line);border-radius:18px;background:#fff;padding:18px;box-shadow:0 6px 20px rgba(34,24,18,.05)}
+.forum-card{cursor:pointer;transition:.18s ease}.forum-card:hover{transform:translateY(-1px);box-shadow:0 10px 28px rgba(34,24,18,.09)}
+.forum-card.selected{outline:2px solid #f6b28b}
+.forum-meta,.event-meta{display:flex;gap:7px;flex-wrap:wrap;align-items:center;color:var(--muted);font-size:12px}
+.forum-badge{display:inline-flex;align-items:center;border:1px solid var(--line);background:#fff8f3;border-radius:999px;padding:5px 9px;font-size:11px;font-weight:700}
+.forum-detail{position:sticky;top:20px;max-height:calc(100vh - 40px);overflow:auto}
+.forum-answer{border:1px solid var(--line);border-radius:14px;padding:13px;background:#fffaf7;margin-top:9px}
+.forum-attachment{display:block;border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-top:8px;text-decoration:none;color:var(--ink);background:#fff}
+.forum-attachment:hover{border-color:#f2b18c;background:#fff7f1}
+.forum-preview{width:100%;max-height:280px;object-fit:contain;border-radius:12px;background:#17120f;margin-top:8px}
+.event-card{display:flex;justify-content:space-between;gap:15px;align-items:flex-start}
+.event-date{min-width:78px;text-align:center;border:1px solid #f1d6c4;border-radius:14px;padding:10px;background:#fff7f1}
+.event-date strong{display:block;font-size:22px}.event-date span{font-size:11px;color:var(--muted);font-weight:700}
+.event-main{flex:1;min-width:0}.event-main h3{margin:0 0 6px}.event-main p{color:var(--muted);line-height:1.5;margin:6px 0}
+.stat-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}.stat-mini{border:1px solid var(--line);border-radius:14px;padding:13px;background:#fff}.stat-mini b{font-size:22px;display:block}.stat-mini span{font-size:11px;color:var(--muted)}
+.contrib-toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}.contrib-toolbar .tab{min-width:120px}.contrib-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.contrib-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:17px;box-shadow:0 5px 20px #2a1d1507}.contrib-card h3{margin:8px 0 5px;font-size:17px}.contrib-meta{display:flex;gap:7px;flex-wrap:wrap;margin:9px 0}.contrib-actions{display:flex;gap:8px;flex-wrap:wrap;padding-top:12px;margin-top:12px;border-top:1px solid var(--line)}.contrib-status.pending{background:#fff3df;color:#9a5a00}.contrib-status.approved{background:#eaf8f1;color:var(--success)}.contrib-status.rejected{background:#fff0ef;color:var(--danger)}.preview-box{background:#17120f0a;border:1px solid var(--line);border-radius:15px;min-height:220px;display:grid;place-items:center;overflow:hidden}.preview-box img{max-width:100%;max-height:520px;object-fit:contain}.preview-box iframe{width:100%;height:70vh;border:0}.preview-box video{max-width:100%;max-height:520px}.preview-box audio{width:90%}.preview-text{width:100%;max-height:60vh;overflow:auto;padding:18px;white-space:pre-wrap;text-align:left;font:13px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace}.contrib-empty{padding:45px 20px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:16px}.contrib-stat{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}.contrib-stat>div{background:#fff;border:1px solid var(--line);border-radius:15px;padding:14px}.contrib-stat b{display:block;font-size:23px}.contrib-stat span{font-size:11px;color:var(--muted)}
+@media(max-width:1150px){.forum-layout{grid-template-columns:minmax(280px,.9fr) minmax(440px,1.1fr)}}@media(max-width:900px){.forum-layout{grid-template-columns:1fr}.forum-detail{position:static;height:auto;max-height:none;min-height:0}.stat-strip{grid-template-columns:repeat(2,1fr)}}
+
+/* ENSPY Live Server Activity */
+.live-activity{position:fixed;right:22px;bottom:22px;width:min(390px,calc(100vw - 30px));z-index:60;pointer-events:none}
+.live-activity-panel{pointer-events:auto;background:rgba(255,255,255,.97);border:1px solid #eadfd7;border-radius:20px;box-shadow:0 20px 55px rgba(34,24,18,.18);overflow:hidden;backdrop-filter:blur(12px);transform:translateY(14px);opacity:0;animation:liveIn .32s ease forwards}
+.live-activity-head{display:flex;align-items:center;justify-content:space-between;padding:13px 15px;border-bottom:1px solid #f0e7e1;background:linear-gradient(135deg,#fff8f3,#fff)}
+.live-activity-title{display:flex;align-items:center;gap:9px;font-weight:800;font-size:13px}.live-dot{width:9px;height:9px;border-radius:50%;background:#19a66b;box-shadow:0 0 0 5px #19a66b18;animation:livePulse 1.7s infinite}.live-activity-head small{color:#756a63;font-size:10px}
+.live-activity-list{max-height:300px;overflow:auto;padding:8px}.live-item{display:flex;gap:10px;padding:10px;border-radius:13px;align-items:flex-start;animation:liveItem .42s ease both}.live-item:hover{background:#fff7f1}.live-icon{width:34px;height:34px;flex:0 0 34px;border-radius:11px;display:grid;place-items:center;background:#fff0e8;color:#c94e0d;font-size:16px}.live-item strong{display:block;font-size:12px;line-height:1.35}.live-item span{display:block;color:#756a63;font-size:10px;margin-top:3px;line-height:1.4}.live-new{position:relative}.live-new::after{content:"NOUVEAU";position:absolute;right:7px;top:7px;font-size:8px;font-weight:900;letter-spacing:.04em;color:#c94e0d;background:#fff0e8;border-radius:999px;padding:3px 5px}
+.live-empty{padding:20px;text-align:center;color:#756a63;font-size:11px}
+@keyframes liveIn{to{transform:translateY(0);opacity:1}}@keyframes livePulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(.72);opacity:.6}}@keyframes liveItem{from{opacity:0;transform:translateY(-8px) scale(.98)}to{opacity:1;transform:none}}
+@media(max-width:760px){.live-activity{right:12px;bottom:12px}}
+
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const $=s=>document.querySelector(s), root=$('#root');
+const state={token:localStorage.getItem('enspy_admin_token')||'',user:JSON.parse(localStorage.getItem('enspy_admin_user')||'null'),page:'dashboard',levelId:1,yearId:null,semesterId:null,levels:[],years:[],semesters:[],ues:[]};
+async function api(path,opt={}){const h=opt.headers||{};h['Accept']='application/json';if(state.token)h.Authorization='Bearer '+state.token;if(opt.body&&!(opt.body instanceof FormData))h['Content-Type']='application/json';const r=await fetch('/api'+path,{...opt,headers:h});const t=await r.text();let d;try{d=t?JSON.parse(t):null}catch{d=t}if(!r.ok)throw new Error(d?.error||`Erreur ${r.status}`);return d}
+function toast(msg){const x=document.createElement('div');x.className='toast';x.textContent=msg;document.body.appendChild(x);setTimeout(()=>x.remove(),2800)}
+function login(){root.innerHTML=`<div class="login"><form class="login-card" id="loginForm"><div class="brand"><img class="brand-logo" src="/assets/enspy-logo.jpg" alt="Logo ENSPY"><div><h1>ENSPY Admin</h1><span>Centre de commandement académique</span></div></div><h2>Bienvenue</h2><p>Gérez les contenus, les niveaux, les utilisateurs et les notifications depuis un seul espace.</p><div class="field"><label>ADRESSE E-MAIL</label><input id="email" type="email" value="admin@enspy.cm" required></div><div class="field"><label>MOT DE PASSE</label><input id="password" type="password" required></div><button class="primary" style="width:100%;margin-top:8px">Ouvrir le centre d'administration</button><p class="small" style="margin-top:18px">Utilisez le compte administrateur principal configuré sur le serveur. Changez son mot de passe avant toute mise en production.</p></form></div>`;$('#loginForm').onsubmit=async e=>{e.preventDefault();try{const d=await api('/auth/login',{method:'POST',body:JSON.stringify({email:$('#email').value,password:$('#password').value})});if(d.user.role==='student')throw new Error('Ce compte n\'est pas administrateur.');state.token=d.token;state.user=d.user;localStorage.setItem('enspy_admin_token',d.token);localStorage.setItem('enspy_admin_user',JSON.stringify(d.user));render()}catch(err){toast(err.message)}}}
+const nav=[['dashboard','◈','Tableau de bord'],['academic','▦','Structure académique'],['content','▤','Contenus & publications'],['users','♙','Étudiants'],['admins','♟','Administrateurs'],['forum','◉','Forum étudiants'],['events','▣','Agenda'],['contributions','⇧','Soumissions'],['notifications','◌','Notifications'],['audit','⌁','Journal d’activité']];
+function shell(){root.innerHTML=`<div class="app"><aside class="sidebar"><div class="side-brand"><img class="side-logo" src="/assets/enspy-logo.jpg" alt="ENSPY"><div><strong>ENSPY Admin</strong><span>Plateforme académique</span></div></div><nav class="nav">${nav.map(n=>`<button data-page="${n[0]}" class="${state.page===n[0]?'active':''}"><b>${n[1]}</b>${n[2]}</button>`).join('')}</nav><div class="side-bottom"><div class="user-mini"><div class="avatar">${(state.user?.name||'A')[0]}</div><div><strong>${state.user?.name||'Administrateur'}</strong><small>${state.user?.role||''}</small></div></div><button class="logout" id="logout">Se déconnecter</button></div></aside><main class="main"><div id="view"></div></main></div>`;document.querySelectorAll('[data-page]').forEach(b=>b.onclick=()=>{state.page=b.dataset.page;render()});$('#logout').onclick=()=>{localStorage.clear();state.token='';state.user=null;login()};loadPage()}
+async function loadPage(){try{if(state.page==='dashboard')await dashboard();else if(state.page==='academic')await academic();else if(state.page==='content')await content();else if(state.page==='users')await users();else if(state.page==='admins')await admins();else if(state.page==='forum')await forum();else if(state.page==='events')await eventsPage();else if(state.page==='contributions')await contributions();else if(state.page==='notifications')await notifications();else await audit()}catch(e){$('#view').innerHTML=`<div class="panel"><div class="empty">${e.message}<br><button class="secondary" style="margin-top:12px" onclick="render()">Réessayer</button></div></div>`}}
+function head(kicker,title,sub,actions=''){return `<div class="topbar"><div><div class="eyebrow">${kicker}</div><div class="title">${title}</div><p class="subtitle">${sub}</p></div><div class="actions">${actions}</div></div>`}
+async function dashboard(){const s=await api('/admin/stats');$('#view').innerHTML=head('Vue générale','Bonjour '+(state.user?.name?.split(' ')[0]||'Admin')+' 👋','Pilotez la plateforme ENSPY depuis un espace centralisé.',`<button class="primary" onclick="state.page='content';render()">+ Publier un contenu</button>`)+`<div class="cards"><div class="stat"><div class="icon">♙</div><b>${s.totalUsers}</b><span>Étudiants inscrits</span></div><div class="stat"><div class="icon">▦</div><b>${s.totalSubjects}</b><span>Unités d’enseignement</span></div><div class="stat"><div class="icon">▤</div><b>${s.totalDocuments}</b><span>Documents existants</span></div><div class="stat"><div class="icon">!</div><b>${s.pendingContributions}</b><span>Contributions en attente</span></div></div><div class="grid2 section"><div class="panel"><div class="panel-head"><h3>Derniers étudiants</h3><button class="secondary" onclick="state.page='users';render()">Voir tout</button></div><div class="panel-body"><table class="table"><thead><tr><th>Étudiant</th><th>Niveau</th><th>Inscription</th></tr></thead><tbody>${(s.recentUsers||[]).map(u=>`<tr><td><strong>${esc(u.name)}</strong><br><span class="small">${esc(u.email)}</span></td><td><span class="badge orange">${esc(u.levelName||'—')}</span></td><td>${new Date(u.createdAt).toLocaleDateString('fr-FR')}</td></tr>`).join('')||'<tr><td colspan="3" class="empty">Aucun étudiant</td></tr>'}</tbody></table></div></div><div class="panel"><div class="panel-head"><h3>Dernières publications</h3><button class="secondary" onclick="state.page='content';render()">Gérer</button></div><div class="panel-body">${(s.recentDocuments||[]).map(d=>`<div class="resource-row"><div><strong>${esc(d.title)}</strong><small>${esc(d.levelName||'')} · ${esc(d.subjectName||'')}</small></div><span class="badge">${esc(d.docType)}</span></div>`).join('')||'<div class="empty">Aucune publication</div>'}</div></div></div>`}
+async function academic(){
+  if(!state.years.length)state.years=await api('/academic/years');
+  if(!state.levels.length)state.levels=await api('/levels');
+  if(!state.yearId)state.yearId=state.years.find(y=>y.isActive)?.id||state.years[0]?.id;
+  const levels=state.levels.filter(l=>l.id<=2);
+  const tabs=levels.map(l=>`<button class="tab ${state.levelId===l.id?'active':''}" onclick="state.levelId=${l.id};state.semesterId=null;render()">${esc(l.name)}</button>`).join('');
+  state.semesters=await api(`/academic/semesters?levelId=${state.levelId}&yearId=${state.yearId||''}`);
+  if(!state.semesterId||!state.semesters.some(s=>s.id===state.semesterId))state.semesterId=state.semesters[0]?.id;
+  state.ues=state.semesterId?await api(`/academic/ues?levelId=${state.levelId}&semesterId=${state.semesterId}`):[];
+  const currentSemester=state.semesters.find(s=>s.id===state.semesterId);
+  const credits=state.ues.reduce((sum,u)=>sum+Number(u.coefficient||0),0);
+  const otherSemester=state.semesters.find(s=>s.id!==state.semesterId);
+  $('#view').innerHTML=
+    head('Structure académique','Niveaux & enseignements','Programme officiel · Tronc commun · 2026/2027',
+      `<button class="secondary" onclick="openUeConfig()">Modifier les UE</button><button class="primary" onclick="addYear()">+ Année académique</button>`) +
+    `<div class="panel academic-structure">
+      <div class="panel-body">
+        <div class="level-tabs">${tabs}</div>
+        <div class="toolbar">
+          <select id="yearSelect">${state.years.map(y=>`<option value="${y.id}" ${y.id===state.yearId?'selected':''}>${esc(y.label)}${y.isActive?' · active':''}</option>`).join('')}</select>
+          ${state.semesters.map(s=>`<button class="tab ${state.semesterId===s.id?'active':''}" onclick="state.semesterId=${s.id};render()">${esc(s.title)}</button>`).join('')}
+        </div>
+        <div class="curriculum-summary">
+          <div><span>Programme</span><strong>${esc(state.levels.find(l=>l.id===state.levelId)?.name||'')}</strong></div>
+          <div><span>Semestre</span><strong>${esc(currentSemester?.title||'—')}</strong></div>
+          <div><span>Unités d’enseignement</span><strong>${state.ues.length}</strong></div>
+          <div><span>Crédits</span><strong>${credits}</strong></div>
+        </div>
+        <div class="ue-grid professional-ue-grid">
+          ${state.ues.map((u,i)=>`<div class="ue professional-ue">
+            <div class="ue-number">${String(i+1).padStart(2,'0')}</div>
+            <code>${esc(u.code)}</code>
+            <strong>${esc(u.name)}</strong>
+            <div class="ue-meta"><span>${Number(u.coefficient||0)} crédit${Number(u.coefficient||0)>1?'s':''}</span><span>${esc(currentSemester?.title||'')}</span></div>
+            <button class="secondary" onclick="state.page='content';state.levelId=${u.levelId};render()">Gérer les ressources</button>
+          </div>`).join('')||'<div class="empty" style="grid-column:1/-1">Aucune UE affectée à ce semestre.</div>'}
+        </div>
+        ${otherSemester?`<div class="next-semester-note">Le programme de ${esc(otherSemester.title)} contient ${await semesterCount(otherSemester.id)} UE. Sélectionnez l’onglet pour l’afficher.</div>`:''}
+      </div>
+    </div>`;
+  $('#yearSelect').onchange=e=>{state.yearId=+e.target.value;state.semesterId=null;render()}
+}
+async function semesterCount(id){try{return (await api(`/academic/ues?levelId=${state.levelId}&semesterId=${id}`)).length}catch{return 0}}
+
+async function content(){const years=state.years.length?state.years:await api('/academic/years');state.years=years;const levels=state.levels.length?state.levels:await api('/levels');state.levels=levels;const levelId=state.levelId||1;const semesters=await api(`/academic/semesters?levelId=${levelId}&yearId=${state.yearId||years[0]?.id||''}`);const ues=await api(`/academic/ues?levelId=${levelId}&semesterId=${state.semesterId||semesters[0]?.id||''}`);const resources=await api(`/academic/resources?levelId=${levelId}`);$('#view').innerHTML=head('Bibliothèque académique','Contenus & publications','Publiez les leçons, TD, corrections, CC, SN, rattrapages et vidéos de chaque UE.',`<button class="primary" onclick="openUpload()">+ Publier une ressource</button>`)+`<div class="panel"><div class="panel-head"><h3>Ressources publiées · ${resources.length}</h3><span class="badge green">Accès ciblé par niveau</span></div><div class="panel-body">${resources.map(r=>`<div class="resource-row"><div><strong>${esc(r.title)}</strong><small>${esc(r.levelName||'')} · ${esc(r.subjectName||'')} · ${esc(r.resourceType)} · ${r.fileSize?Math.round(r.fileSize/1024/1024*10)/10+' Mo':''}</small></div><div><span class="badge ${r.status==='published'?'green':''}">${esc(r.status)}</span> ${r.fileUrl?`<a class="secondary" href="${esc(r.fileUrl)}" target="_blank" rel="noreferrer">Ouvrir</a>`:''} <button class="danger" onclick="deleteResource(${r.id})">Supprimer</button></div></div>`).join('')||'<div class="empty">Aucune ressource publiée pour ce niveau.</div>'}</div></div>`;window._content={levels,semesters,ues}}
+async function users(){if(!state.levels.length)state.levels=await api('/levels');const us=await api('/users');$('#view').innerHTML=head('Comptes','Étudiants','Les étudiants sont automatiquement rattachés à leur niveau.',`<button class="secondary" onclick="render()">Actualiser</button>`)+`<div class="panel"><div class="panel-body"><div class="toolbar"><input id="userSearch" placeholder="Rechercher un nom ou e-mail…"><select id="userLevel"><option value="">Tous les niveaux</option>${state.levels.filter(l=>l.id<=2).map(l=>`<option>${esc(l.name)}</option>`).join('')}</select></div><table class="table"><thead><tr><th>Étudiant</th><th>Niveau</th><th>Rôle</th><th>Inscrit le</th></tr></thead><tbody id="userRows">${us.map(u=>`<tr data-search="${esc((u.name+' '+u.email+' '+(u.levelName||'')).toLowerCase())}" data-level="${esc(u.levelName||'')}"><td><strong>${esc(u.name)}</strong><br><span class="small">${esc(u.email)}</span></td><td><span class="badge orange">${esc(u.levelName||'—')}</span></td><td><span class="badge">${esc(u.role)}</span></td><td>${new Date(u.createdAt).toLocaleDateString('fr-FR')}</td></tr>`).join('')}</tbody></table></div></div>`;const filter=()=>{const q=$('#userSearch').value.toLowerCase(),l=$('#userLevel').value;document.querySelectorAll('#userRows tr').forEach(r=>r.style.display=(!q||r.dataset.search.includes(q))&&(!l||r.dataset.level===l)?'':'none')};$('#userSearch').oninput=filter;$('#userLevel').onchange=filter}
+async function admins(){const a=await api('/academic/admins');$('#view').innerHTML=head('Sécurité','Administrateurs','Le compte principal conserve tous les droits. Les sous-administrateurs reçoivent un rôle limité.',`<button class="primary" onclick="openAdmin()">+ Créer un sous-administrateur</button>`)+`<div class="panel"><div class="panel-body"><table class="table"><thead><tr><th>Administrateur</th><th>Rôle</th><th>Niveau</th><th>Action</th></tr></thead><tbody>${a.map(x=>`<tr><td><strong>${esc(x.name)}</strong><br><span class="small">${esc(x.email)}</span></td><td><span class="badge orange">${esc(x.role)}</span></td><td>${esc(x.levelName||'Tous')}</td><td><button class="danger" onclick="demoteAdmin(${x.id})">Retirer admin</button></td></tr>`).join('')}</tbody></table></div></div>`}
+
+function forumAttachment(a){
+  const url=esc(a.fileUrl||'');
+  const name=esc(a.originalName||'Pièce jointe');
+  const mime=String(a.mimeType||'').toLowerCase();
+  if(!url)return '';
+  if(mime.startsWith('image/'))return `<div class="forum-attachment"><strong>${name}</strong><img class="forum-preview" src="${url}" alt="${name}" loading="lazy" onerror="this.style.display='none'"><a class="secondary" href="${url}" target="_blank" rel="noreferrer">Ouvrir l'image</a></div>`;
+  if(mime.startsWith('video/'))return `<div class="forum-attachment"><strong>${name}</strong><video class="forum-preview" controls preload="metadata" src="${url}"></video><a class="secondary" href="${url}" target="_blank" rel="noreferrer">Ouvrir la vidéo</a></div>`;
+  if(mime.startsWith('audio/'))return `<div class="forum-attachment"><strong>${name}</strong><audio controls style="width:100%;margin-top:8px" src="${url}"></audio><a class="secondary" href="${url}" target="_blank" rel="noreferrer">Ouvrir le fichier</a></div>`;
+  return `<a class="forum-attachment" href="${url}" target="_blank" rel="noreferrer">↗ <strong>${name}</strong><br><span class="small">${esc(a.mimeType||'Document')} · ${Math.max(0,Math.round(Number(a.fileSize||0)/1024))} Ko</span></a>`;
+}
+async function forum(){
+  const q=window._forumSearch||'';
+  const posts=await api('/forum/posts'+(q?`?search=${encodeURIComponent(q)}`:''));
+  const selectedId=window._forumSelectedId;
+  let selected=null;
+  if(selectedId){
+    try{selected=await api('/forum/posts/'+selectedId)}
+    catch{window._forumSelectedId=null}
+  }
+
+  const stats=[
+    ['Publications',posts.length],
+    ['Réponses',posts.reduce((n,x)=>n+Number(x.answerCount||0),0)],
+    ['Pièces jointes',posts.reduce((n,x)=>n+Number(x.attachmentCount||0),0)],
+    ['Résolues',posts.filter(x=>x.resolved).length]
+  ];
+
+  const cards=posts.map(x=>`<article class="forum-card ${selected?.id===x.id?'selected':''}" onclick="selectForumPost(${x.id})">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+      <div style="min-width:0;flex:1">
+        <strong class="forum-card-title">${esc(x.title)}</strong>
+        <p class="forum-card-excerpt">${esc(x.content)}</p>
+      </div>
+      <button class="danger" title="Supprimer cette publication" aria-label="Supprimer cette publication" onclick="event.stopPropagation();deleteForumPost(${x.id})">Supprimer</button>
+    </div>
+    <div class="forum-meta">
+      <span><strong>${esc(x.authorName||'Étudiant')}</strong></span>
+      <span>${Number(x.answerCount||0)} réponse(s)</span>
+      <span>👍 ${Number(x.votes||0)}</span>
+      <span class="forum-badge">${x.visibility==='level'?'Niveau '+esc(x.levelId||'ciblé'):'Tous les étudiants'}</span>
+      ${Number(x.attachmentCount||0)?`<span class="forum-badge">📎 ${x.attachmentCount} fichier(s)</span>`:''}
+      <span>${new Date(x.createdAt).toLocaleString('fr-FR',{dateStyle:'short',timeStyle:'short'})}</span>
+      ${x.resolved?`<span class="forum-badge" style="color:var(--success);background:#eaf8f1">✓ Résolue</span>`:''}
+    </div>
+  </article>`).join('')||'<div class="empty panel">Aucune publication dans le forum.</div>';
+
+  const detail=selected?`<section class="panel forum-detail">
+    <div class="panel-head">
+      <div style="min-width:0">
+        <span class="eyebrow">Discussion</span>
+        <h3 style="margin:4px 0;overflow-wrap:anywhere">${esc(selected.title)}</h3>
+        <span class="small">${esc(selected.authorName||'Étudiant')} · ${new Date(selected.createdAt).toLocaleString('fr-FR',{dateStyle:'medium',timeStyle:'short'})}</span>
+      </div>
+      <button class="secondary" onclick="window._forumSelectedId=null;forum()">Fermer</button>
+    </div>
+    <div class="panel-body">
+      <div class="forum-meta" style="margin-bottom:12px">
+        <span class="forum-badge">${selected.visibility==='level'?'Niveau '+esc(selected.levelId||'ciblé'):'Tous les étudiants'}</span>
+        <span class="forum-badge">👍 ${Number(selected.votes||0)} vote(s)</span>
+        <span class="forum-badge">${selected.answerCount||0} réponse(s)</span>
+        ${selected.resolved?'<span class="forum-badge" style="color:var(--success);background:#eaf8f1">✓ Résolue</span>':''}
+      </div>
+      <p style="white-space:pre-wrap;line-height:1.65;margin-top:0">${esc(selected.content)}</p>
+      ${(selected.attachments||[]).length?`<h4>Pièces jointes (${selected.attachments.length})</h4>${selected.attachments.map(forumAttachment).join('')}`:''}
+      <h4 style="margin-top:20px">Réponses (${selected.answers?.length||0})</h4>
+      ${(selected.answers||[]).map(a=>`<div class="forum-answer">
+        <div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start">
+          <div><strong>${esc(a.authorName||'Utilisateur')}</strong><div class="small" style="margin-top:4px">${new Date(a.createdAt).toLocaleString('fr-FR',{dateStyle:'short',timeStyle:'short'})} · 👍 ${Number(a.votes||0)}</div></div>
+          <button class="danger" onclick="deleteForumAnswer(${a.id},${selected.id})">Supprimer</button>
+        </div>
+        <div style="white-space:pre-wrap;line-height:1.55;margin-top:8px">${esc(a.content)}</div>
+        ${(a.attachments||[]).map(forumAttachment).join('')}
+      </div>`).join('')||'<div class="empty" style="padding:20px">Aucune réponse pour le moment.</div>'}
+
+      <div class="forum-reply-box">
+        <div style="border-top:1px solid var(--line);margin-top:18px;padding-top:14px">
+          <label class="field"><span>RÉPONDRE EN TANT QU’ADMINISTRATION</span><textarea id="forumReply" rows="3" placeholder="Écrivez une réponse officielle…"></textarea></label>
+          <div style="display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap">
+            <button class="danger" onclick="deleteForumPost(${selected.id})">Supprimer la discussion</button>
+            <button class="primary" onclick="replyForum(${selected.id})">Publier la réponse</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>`:'<section class="panel forum-detail"><div class="empty">Sélectionnez une discussion pour consulter son contenu, ses pièces jointes et toutes les réponses.</div></section>';
+
+  $('#view').innerHTML=head('Communauté','Forum étudiants','Modérez les publications, consultez les pièces jointes, répondez et supprimez les contenus si nécessaire.')+
+  `<div class="stat-strip">${stats.map(s=>`<div class="stat-mini"><b>${s[1]}</b><span>${s[0]}</span></div>`).join('')}</div>
+   <div class="panel" style="margin-bottom:14px">
+     <div class="panel-body">
+       <div class="forum-toolbar">
+         <input id="forumSearch" style="flex:1;min-width:220px" placeholder="Rechercher une publication…" value="${esc(q)}" onkeydown="if(event.key==='Enter'){window._forumSearch=this.value.trim();forum()}">
+         <button class="secondary" onclick="window._forumSearch=$('#forumSearch').value.trim();forum()">Rechercher</button>
+         <button class="secondary" onclick="window._forumSearch='';forum()">Réinitialiser</button>
+         <button class="secondary" onclick="forum()">↻ Actualiser</button>
+       </div>
+     </div>
+   </div>
+   <div class="forum-admin-kpis"><strong>${posts.length} discussion(s) affichée(s)</strong><span>${selected?'Discussion ouverte à droite':'Cliquez sur une discussion pour la gérer'}</span></div>
+   <div class="forum-layout"><section class="forum-list">${cards}</section>${detail}</div>`;
+}
+async function selectForumPost(id){window._forumSelectedId=id;await forum()}
+async function deleteForumPost(id){
+  if(!confirm('Supprimer définitivement cette publication, ses réponses et ses pièces jointes ?'))return;
+  try{await api('/forum/posts/'+id,{method:'DELETE'});window._forumSelectedId=null;toast('Publication supprimée.');await forum()}catch(e){toast(e.message)}
+}
+async function deleteForumAnswer(answerId,postId){
+  if(!confirm('Supprimer définitivement cette réponse ?'))return;
+  try{await api('/forum/answers/'+answerId,{method:'DELETE'});window._forumSelectedId=postId;toast('Réponse supprimée.');await forum()}catch(e){toast(e.message)}
+}
+async function replyForum(postId){
+  const box=$('#forumReply'),content=box?.value.trim();
+  if(!content||content.length<5){toast('La réponse doit contenir au moins 5 caractères.');return}
+  try{await api('/forum/posts/'+postId+'/answers',{method:'POST',body:JSON.stringify({content})});toast('Réponse publiée.');window._forumSelectedId=postId;await forum()}catch(e){toast(e.message)}
+}
+async function eventsPage(){
+  const events=await api('/events');
+  const levels=state.levels.length?state.levels:await api('/levels');state.levels=levels;
+  const now=new Date();
+  const upcoming=events.filter(x=>new Date(x.startDate)>=now).length;
+  const past=events.length-upcoming;
+  const types={exam:'Examen',class:'Cours',tp:'TP',special:'Événement spécial'};
+  const cards=events.map(x=>{const d=new Date(x.startDate);return `<article class="event-card">
+    <div class="event-date"><strong>${String(d.getDate()).padStart(2,'0')}</strong><span>${d.toLocaleDateString('fr-FR',{month:'short'}).replace('.','').toUpperCase()}</span></div>
+    <div class="event-main"><div class="event-meta"><span class="forum-badge">${esc(types[x.eventType]||x.eventType)}</span>${x.levelId?`<span class="forum-badge">Niveau ${esc(x.levelId)}</span>`:'<span class="forum-badge">Tous</span>'}</div>
+      <h3>${esc(x.title)}</h3><p>${esc(x.description||'Aucune description.')}</p>
+      <div class="event-meta"><span>🕒 ${d.toLocaleString('fr-FR')}</span>${x.location?`<span>📍 ${esc(x.location)}</span>`:''}${x.subjectName?`<span>📚 ${esc(x.subjectName)}</span>`:''}</div>
+    </div><button class="danger" onclick="deleteEvent(${x.id})">Supprimer</button>
+  </article>`}).join('')||'<div class="empty">Aucun événement enregistré.</div>';
+  $('#view').innerHTML=head('Planification','Agenda académique','Créez les examens, cours, TP et événements qui seront automatiquement disponibles dans l’application mobile.',`<button class="primary" onclick="openEventModal()">+ Nouvel événement</button>`)+
+  `<div class="stat-strip"><div class="stat-mini"><b>${events.length}</b><span>Total événements</span></div><div class="stat-mini"><b>${upcoming}</b><span>À venir</span></div><div class="stat-mini"><b>${past}</b><span>Passés</span></div><div class="stat-mini"><b>${events.filter(x=>x.eventType==='exam').length}</b><span>Examens</span></div></div>
+   <div class="panel"><div class="panel-body"><div class="event-list">${cards}</div></div></div>`;
+}
+async function openEventModal(){
+  if(!state.levels.length)state.levels=await api('/levels');
+  modal('Nouvel événement académique',`<form id="eventForm">
+    <div class="field"><label>TITRE</label><input id="etitle" required minlength="3" placeholder="Ex. Examen d'algèbre"></div>
+    <div class="two"><div class="field"><label>TYPE</label><select id="etype"><option value="exam">Examen</option><option value="class">Cours</option><option value="tp">TP</option><option value="special">Événement spécial</option></select></div><div class="field"><label>DATE ET HEURE</label><input id="edate" type="datetime-local" required></div></div>
+    <div class="two"><div class="field"><label>NIVEAU CIBLE</label><select id="elevel"><option value="">Tous les niveaux</option>${state.levels.filter(l=>l.id<=2).map(l=>`<option value="${l.id}">${esc(l.name)}</option>`).join('')}</select></div><div class="field"><label>SALLE / LIEU</label><input id="elocation" placeholder="Ex. Amphi 100"></div></div>
+    <div class="field"><label>DESCRIPTION</label><textarea id="edesc" rows="4" placeholder="Consignes, horaires, informations utiles…"></textarea></div>
+    <button class="primary" style="width:100%">Créer l'événement</button>
+  </form>`);
+  $('#eventForm').onsubmit=async e=>{e.preventDefault();try{
+    await api('/events',{method:'POST',body:JSON.stringify({title:$('#etitle').value.trim(),description:$('#edesc').value.trim(),eventType:$('#etype').value,startDate:new Date($('#edate').value).toISOString(),location:$('#elocation').value.trim(),levelId:$('#elevel').value?Number($('#elevel').value):undefined})});
+    closeModal();toast('Événement créé. Une notification a été générée.');await eventsPage();
+  }catch(err){toast(err.message)}};
+}
+async function deleteEvent(id){
+  if(!confirm('Supprimer définitivement cet événement ?'))return;
+  try{await api('/events/'+id,{method:'DELETE'});toast('Événement supprimé.');await eventsPage()}catch(e){toast(e.message)}
+}
+
+async function contributions(){
+  const [pending,approved,rejected]=await Promise.all([
+    api('/contributions?status=pending'),api('/contributions?status=approved'),api('/contributions?status=rejected')
+  ]);
+  const all=[...pending,...approved,...rejected].sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+  const statusLabel={pending:'En attente',approved:'Publiée',rejected:'Refusée'};
+  const card=x=>`<article class="contrib-card">
+    <div class="contrib-meta"><span class="badge orange">${esc(x.docType||'autre')}</span><span class="badge">${esc(x.subjectName||'UE non renseignée')}</span><span class="badge contrib-status ${esc(x.status)}">${statusLabel[x.status]||x.status}</span></div>
+    <h3>${esc(x.title)}</h3>
+    <div class="small">${esc(x.contributorName||'Étudiant')} · ${new Date(x.createdAt).toLocaleString('fr-FR')}</div>
+    ${x.description?`<p class="small" style="margin:10px 0;line-height:1.55">${esc(x.description)}</p>`:''}
+    <div class="contrib-actions">
+      <button class="secondary" onclick='previewContribution(${JSON.stringify(x.id)})'>👁 Aperçu</button>
+      <a class="secondary" href="${esc(x.fileUrl)}" target="_blank" rel="noreferrer">↗ Ouvrir</a>
+      <a class="secondary" href="${esc(x.fileUrl)}" download>⬇ Télécharger</a>
+      ${x.status==='pending'?`<button class="primary" onclick='reviewContribution(${JSON.stringify(x.id)},"approved")'>✓ Publier</button><button class="danger" onclick='reviewContribution(${JSON.stringify(x.id)},"rejected")'>✕ Refuser</button>`:''}
+      ${x.adminNote?`<span class="small" style="width:100%"><strong>Note :</strong> ${esc(x.adminNote)}</span>`:''}
+    </div>
+  </article>`;
+  $('#view').innerHTML=head('Modération','Soumissions étudiantes','Examinez, prévisualisez et publiez les fichiers envoyés par les étudiants.',`<button class="secondary" onclick="render()">Actualiser</button>`)+
+  `<div class="contrib-stat"><div><b>${pending.length}</b><span>En attente</span></div><div><b>${approved.length}</b><span>Publiées</span></div><div><b>${rejected.length}</b><span>Refusées</span></div><div><b>${all.length}</b><span>Total</span></div></div>`+
+  `<div class="panel"><div class="panel-body"><div class="contrib-toolbar"><button class="tab active" data-cfilter="all">Toutes · ${all.length}</button><button class="tab" data-cfilter="pending">En attente · ${pending.length}</button><button class="tab" data-cfilter="approved">Publiées · ${approved.length}</button><button class="tab" data-cfilter="rejected">Refusées · ${rejected.length}</button></div><div id="contribList" class="contrib-grid">${all.map(card).join('')||'<div class="contrib-empty" style="grid-column:1/-1">Aucune soumission pour le moment.</div>'}</div></div></div>`;
+  document.querySelectorAll('[data-cfilter]').forEach(btn=>btn.onclick=()=>{document.querySelectorAll('[data-cfilter]').forEach(b=>b.classList.remove('active'));btn.classList.add('active');const f=btn.dataset.cfilter;$('#contribList').innerHTML=all.filter(x=>f==='all'||x.status===f).map(card).join('')||'<div class="contrib-empty" style="grid-column:1/-1">Aucune soumission dans cette catégorie.</div>'});
+}
+async function reviewContribution(id,status){
+  let note='';
+  if(status==='rejected'){note=prompt('Motif du refus (facultatif) :') ?? '';}
+  if(status==='approved' && !confirm('Publier ce document dans les enseignements et notifier les étudiants concernés ?'))return;
+  try{await api(`/contributions/${id}`,{method:'PATCH',body:JSON.stringify({status,adminNote:note||undefined})});toast(status==='approved'?'Document publié avec succès.':'Soumission refusée.');render()}catch(e){toast(e.message)}
+}
+async function previewContribution(id){
+  try{
+    const items=await api('/contributions?status=pending').then(p=>p).catch(()=>[]);
+    const [a,b]=await Promise.all([api('/contributions?status=approved'),api('/contributions?status=rejected')]);
+    const x=[...items,...a,...b].find(v=>Number(v.id)===Number(id));
+    if(!x)throw new Error('Soumission introuvable');
+    const url=x.fileUrl||''; const ext=(url.split('.').pop()||'').toLowerCase().split('?')[0];
+    const type=({jpg:'image/jpeg',jpeg:'image/jpeg',png:'image/png',gif:'image/gif',webp:'image/webp',pdf:'application/pdf',mp4:'video/mp4',webm:'video/webm',mov:'video/quicktime',mp3:'audio/mpeg',wav:'audio/wav',m4a:'audio/mp4',txt:'text/plain',csv:'text/csv'})[ext]||'';
+    let body=`<div class="preview-box"><div class="empty">Aperçu non disponible pour ce format.<br><a class="secondary" href="${esc(url)}" download>Télécharger le fichier</a></div></div>`;
+    if(type.startsWith('image/'))body=`<div class="preview-box"><img src="${esc(url)}" alt="Aperçu du document"></div>`;
+    else if(type==='application/pdf')body=`<div class="preview-box"><iframe src="${esc(url)}" title="Aperçu PDF"></iframe></div>`;
+    else if(type.startsWith('video/'))body=`<div class="preview-box"><video controls src="${esc(url)}"></video></div>`;
+    else if(type.startsWith('audio/'))body=`<div class="preview-box"><audio controls src="${esc(url)}"></audio></div>`;
+    else if(type==='text/plain'||type==='text/csv'){const text=await fetch(url,{headers:{Authorization:'Bearer '+state.token}}).then(r=>r.text());body=`<div class="preview-box"><pre class="preview-text">${esc(text.slice(0,50000))}</pre></div>`;}
+    modal(`Aperçu · ${esc(x.title)}`,`${body}<div style="display:flex;justify-content:space-between;gap:10px;align-items:center;margin-top:14px"><span class="small">${esc(x.contributorName||'Étudiant')} · ${esc(x.subjectName||'')}</span><a class="primary" href="${esc(url)}" download>Télécharger</a></div>`);
+  }catch(e){toast(e.message)}
+}
+async function notifications(){
+  const n=await api('/notifications');
+  const media=x=>{
+    if(!x.mediaUrl){
+      return x.mediaName?`<div class="attachment-missing">Pièce jointe enregistrée mais indisponible : <strong>${esc(x.mediaName)}</strong></div>`:'';
+    }
+    if(x.mediaType==='image'){
+      return `<div class="notif-media-wrap"><img class="notif-media-image" src="${esc(x.mediaUrl)}" alt="${esc(x.mediaName||x.title)}" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><div class="attachment-missing" style="display:none">Impossible d'afficher cette image. <a href="${esc(x.mediaUrl)}" target="_blank" rel="noreferrer">Ouvrir le fichier</a></div><a class="secondary notif-file" href="${esc(x.mediaUrl)}" target="_blank" rel="noreferrer">↗ Ouvrir ${esc(x.mediaName||'l’image')}</a></div>`;
+    }
+    if(x.mediaType==='video')return `<video class="notif-media-video" controls preload="metadata" src="${esc(x.mediaUrl)}"></video>`;
+    if(x.mediaType==='audio')return `<audio controls style="width:min(620px,100%);margin-top:8px" src="${esc(x.mediaUrl)}"></audio>`;
+    return `<a class="secondary notif-file" href="${esc(x.mediaUrl)}" target="_blank" rel="noreferrer">↗ Ouvrir ${esc(x.mediaName||'le fichier')}</a>`;
+  };
+  $('#view').innerHTML=head('Communication','Annonces','Publiez des annonces avec texte, image, document ou vidéo et ciblez précisément les étudiants.',`<button class="primary" onclick="openNotif()">+ Nouvelle annonce</button>`)+
+  `<div class="panel"><div class="panel-body">
+    ${n.map(x=>`<article class="notification-card">
+      <div class="notification-top"><div><strong>${esc(x.title)}</strong><small>${new Date(x.createdAt).toLocaleString('fr-FR')}</small></div><div class="notification-actions"><span class="badge">${x.levelId?'Niveau '+x.levelId:'Tous'}</span><button class="danger" onclick="deleteNotification(${x.id})">Supprimer</button></div></div>
+      <p>${esc(x.message)}</p>
+      ${media(x)}
+    </article>`).join('')||'<div class="empty">Aucune notification.</div>'}
+  </div></div>`
+}
+async function deleteNotification(id){
+  if(!confirm('Supprimer définitivement cette notification ?'))return;
+  try{await api('/notifications/'+id,{method:'DELETE'});toast('Notification supprimée.');await notifications()}catch(e){toast(e.message)}
+}
+async function audit(){const a=await api('/academic/audit');$('#view').innerHTML=head('Sécurité','Journal d’activité','Chaque action importante des administrateurs est conservée pour traçabilité.')+`<div class="panel"><div class="panel-body"><table class="table"><thead><tr><th>Date</th><th>Administrateur</th><th>Action</th><th>Objet</th></tr></thead><tbody>${a.map(x=>`<tr><td>${new Date(x.createdAt).toLocaleString('fr-FR')}</td><td>${esc(x.adminName||'—')}</td><td><span class="badge">${esc(x.action)}</span></td><td>${esc(x.entityType)} #${x.entityId||'—'}</td></tr>`).join('')||'<tr><td colspan="4" class="empty">Aucune activité.</td></tr>'}</tbody></table></div></div>`}
+function openUpload(){
+  const c=window._content||{};
+  modal('Publier une ressource',`<form id="uploadForm">
+    <div class="field"><label>TITRE</label><input id="rtitle" required placeholder="TD 03 — Algèbre linéaire"></div>
+    <div class="two">
+      <div class="field"><label>NIVEAU</label><select id="rlevel">${(state.levels||[]).filter(l=>l.id<=2).map(l=>`<option value="${l.id}">${esc(l.name)}</option>`).join('')}</select></div>
+      <div class="field"><label>TYPE</label><select id="rtype">
+        <option value="lesson">Leçon</option><option value="video">Vidéo</option><option value="td">TD</option>
+        <option value="td_correction">Correction TD</option><option value="cc">CC</option><option value="cc_correction">Correction CC</option>
+        <option value="sn">Session normale</option><option value="sn_correction">Correction SN</option>
+        <option value="rattrapage">Rattrapage</option><option value="rattrapage_correction">Correction rattrapage</option>
+        <option value="exercise">Exercices type</option>
+      </select></div>
+    </div>
+    <div class="two">
+      <div class="field"><label>SEMESTRE</label><select id="rsemester" required></select></div>
+      <div class="field"><label>UE</label><select id="rue" required><option value="">Sélectionnez une UE</option></select></div>
+    </div>
+    <div class="field"><label>DESCRIPTION</label><textarea id="rdesc" rows="3" placeholder="Informations complémentaires…"></textarea></div>
+    <div class="field"><label>FICHIER · PDF, documents, images, vidéos ou audio · 200 Mo max</label><input id="rfile" type="file" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.txt,.csv,image/*,video/*,audio/*"></div>
+    <div id="rfilePreview" class="small"></div>
+    <div class="field"><label>OU LIEN EXTERNE (vidéo, etc.)</label><input id="rurl" type="url" placeholder="https://…"></div>
+    <button class="primary" style="width:100%">Publier</button>
+  </form>`);
+  const load=async()=>{
+    const l=+$('#rlevel').value;
+    const sem=await api(`/academic/semesters?levelId=${l}&yearId=${state.yearId||state.years[0]?.id||''}`);
+    $('#rsemester').innerHTML=sem.map(x=>`<option value="${x.id}">${esc(x.title)}</option>`).join('');
+    const u=await api(`/academic/ues?levelId=${l}&semesterId=${sem[0]?.id||''}`);
+    $('#rue').innerHTML='<option value="">Sélectionnez une UE</option>'+u.map(x=>`<option value="${x.id}">${esc(x.code)} · ${esc(x.name)}</option>`).join('');
+  };
+  load();
+  $('#rlevel').onchange=load;
+  $('#rsemester').onchange=async()=>{
+    const u=await api(`/academic/ues?levelId=${+$('#rlevel').value}&semesterId=${+$('#rsemester').value}`);
+    $('#rue').innerHTML='<option value="">Sélectionnez une UE</option>'+u.map(x=>`<option value="${x.id}">${esc(x.code)} · ${esc(x.name)}</option>`).join('');
+  };
+  $('#rfile').onchange=e=>{
+    const file=e.target.files[0];
+    if(!file){$('#rfilePreview').textContent='';return}
+    const max=200*1024*1024;
+    $('#rfilePreview').textContent=`${file.name} · ${(file.size/1024/1024).toFixed(1)} Mo`;
+    if(file.size>max){$('#rfilePreview').textContent+=' · Fichier trop volumineux (200 Mo maximum)';e.target.value='';}
+  };
+  $('#uploadForm').onsubmit=async e=>{
+    e.preventDefault();
+    const file=$('#rfile').files[0];
+    if(!$('#rue').value){toast('Sélectionnez une UE avant de publier.');return}
+    if(!file&&!$('#rurl').value){toast('Choisissez un fichier ou renseignez un lien externe.');return}
+    if(file&&file.size>200*1024*1024){toast('Le fichier dépasse la limite de 200 Mo.');return}
+    try{
+      if(file && file.size > 200*1024*1024){toast('La pièce jointe dépasse la limite de 200 Mo.');return}
+      if(file){
+        const fd=new FormData();
+        [['title','rtitle'],['description','rdesc'],['levelId','rlevel'],['semesterId','rsemester'],['subjectId','rue'],['resourceType','rtype']].forEach(([a,b])=>fd.append(a,$('#'+b).value));
+        if(state.yearId)fd.append('academicYearId',String(state.yearId));
+        fd.append('file',file);
+        await api('/academic/resources/upload',{method:'POST',body:fd});
+      }else{
+        await api('/academic/resources',{method:'POST',body:JSON.stringify({
+          title:$('#rtitle').value,description:$('#rdesc').value,levelId:+$('#rlevel').value,
+          semesterId:+$('#rsemester').value,subjectId:+$('#rue').value,resourceType:$('#rtype').value,
+          externalUrl:$('#rurl').value,status:'published',academicYearId:state.yearId
+        })});
+      }
+      toast('Ressource publiée et notification créée.');closeModal();render();
+    }catch(err){toast(err.message)}
+  }
+}
+function openAdmin(){modal('Créer un sous-administrateur',`<form id="adminForm"><div class="field"><label>NOM</label><input id="aname" required></div><div class="field"><label>E-MAIL</label><input id="aemail" type="email" required></div><div class="two"><div class="field"><label>RÔLE</label><select id="arole"><option value="academic_admin">Administrateur académique</option><option value="content_manager">Gestionnaire de contenu</option><option value="notification_manager">Gestionnaire notifications</option><option value="viewer">Lecture seule</option></select></div><div class="field"><label>NIVEAU</label><select id="alevel"><option value="1">Niveau 1</option><option value="2">Niveau 2</option></select></div></div><div class="field"><label>MOT DE PASSE</label><input id="apass" type="password" minlength="6" required></div><button class="primary" style="width:100%">Créer</button></form>`);$('#adminForm').onsubmit=async e=>{e.preventDefault();try{await api('/academic/admins',{method:'POST',body:JSON.stringify({name:$('#aname').value,email:$('#aemail').value,password:$('#apass').value,role:$('#arole').value,levelId:+$('#alevel').value})});toast('Sous-administrateur créé.');closeModal();render()}catch(err){toast(err.message)}}}
+function openNotif(){
+  modal('Nouvelle annonce',`<form id="notifForm">
+    <div class="field"><label>TITRE</label><input id="ntitle" required placeholder="Ex. Informations importantes"></div>
+    <div class="field"><label>MESSAGE</label><textarea id="nmsg" rows="4" required placeholder="Votre annonce…"></textarea></div>
+    <div class="two">
+      <div class="field"><label>NIVEAU CIBLE</label><select id="nlevel"><option value="">Tous les niveaux</option><option value="1">Niveau 1</option><option value="2">Niveau 2</option></select></div>
+      <div class="field"><label>TYPE</label><select id="ntype"><option value="system">Annonce</option><option value="document">Nouveau contenu</option><option value="event">Événement</option></select></div>
+    </div>
+    <div class="two">
+      <div class="field"><label>SEMESTRE (optionnel)</label><select id="nsemester"><option value="">Tous les semestres</option></select></div>
+      <div class="field"><label>UE (optionnel)</label><select id="nsubject"><option value="">Toutes les UE</option></select></div>
+    </div>
+    <div class="field"><label>PIÈCE JOINTE · PDF, document, image ou vidéo · 200 Mo max</label><input id="nfile" type="file" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.txt,.csv,image/*,video/*,audio/*"></div>
+    <div id="nfilePreview" class="small"></div>
+    <button class="primary" style="width:100%">Publier l’annonce</button>
+  </form>`);
+  const loadTargets=async()=>{
+    const level=+$('#nlevel').value;
+    $('#nsemester').innerHTML='<option value="">Tous les semestres</option>';
+    $('#nsubject').innerHTML='<option value="">Toutes les UE</option>';
+    if(!level)return;
+    const sem=await api(`/academic/semesters?levelId=${level}&yearId=${state.yearId||''}`);
+    $('#nsemester').innerHTML='<option value="">Tous les semestres</option>'+sem.map(x=>`<option value="${x.id}">${esc(x.title)}</option>`).join('');
+    const u=await api(`/academic/ues?levelId=${level}`);
+    $('#nsubject').innerHTML='<option value="">Toutes les UE</option>'+u.map(x=>`<option value="${x.id}">${esc(x.code)} · ${esc(x.name)}</option>`).join('');
+  };
+  $('#nlevel').onchange=loadTargets;loadTargets();
+  $('#nfile').onchange=e=>{$('#nfilePreview').textContent=e.target.files[0]?`Fichier sélectionné : ${e.target.files[0].name} (${Math.round(e.target.files[0].size/1024/1024*10)/10} Mo)`:''};
+  $('#notifForm').onsubmit=async e=>{
+    e.preventDefault();
+    const file=$('#nfile').files[0];
+    try{
+      if(file){
+        const fd=new FormData();
+        fd.append('title',$('#ntitle').value);
+        fd.append('message',$('#nmsg').value);
+        fd.append('notifType',$('#ntype').value);
+        if($('#nlevel').value)fd.append('levelId',$('#nlevel').value);
+        if($('#nsemester').value)fd.append('semesterId',$('#nsemester').value);
+        if($('#nsubject').value)fd.append('subjectId',$('#nsubject').value);
+        fd.append('file',file);
+        await api('/notifications/upload',{method:'POST',body:fd});
+      }else{
+        await api('/notifications',{method:'POST',body:JSON.stringify({
+          title:$('#ntitle').value,message:$('#nmsg').value,notifType:$('#ntype').value,
+          levelId:$('#nlevel').value||null,semesterId:$('#nsemester').value||null,subjectId:$('#nsubject').value||null
+        })});
+      }
+      toast('Annonce publiée avec succès.');closeModal();render();
+    }catch(err){toast(err.message)}
+  }
+}
+async function openUeConfig(){if(!state.semesterId){toast('Sélectionnez un semestre.');return}const all=await api(`/academic/ues?levelId=${state.levelId}&semesterId=${state.semesterId}`),assigned=await api(`/academic/semesters/${state.semesterId}/ues`);const ids=new Set(assigned.map(x=>x.id));modal('UE du semestre',`<p class="small">Cochez les UE qui appartiennent à ce semestre. Tant qu’aucune affectation n’existe, l’application affiche toutes les UE du niveau pour préserver les données existantes.</p><div id="ueChecks">${all.map(u=>`<label style="display:flex;gap:10px;align-items:center;padding:11px;border:1px solid var(--line);border-radius:12px;margin:7px 0"><input type="checkbox" value="${u.id}" ${ids.has(u.id)?'checked':''}> <span><strong>${esc(u.code)}</strong> · ${esc(u.name)}</span></label>`).join('')}</div><button class="primary" id="saveUes" style="width:100%;margin-top:12px">Enregistrer la structure</button>`);$('#saveUes').onclick=async()=>{try{for(const u of all){const checked=[...document.querySelectorAll('#ueChecks input')].find(x=>+x.value===u.id)?.checked||false;if(checked&&!ids.has(u.id))await api(`/academic/semesters/${state.semesterId}/ues`,{method:'POST',body:JSON.stringify({subjectId:u.id})});if(!checked&&ids.has(u.id))await api(`/academic/semesters/${state.semesterId}/ues/${u.id}`,{method:'DELETE'})}toast('Structure du semestre mise à jour.');closeModal();render()}catch(e){toast(e.message)}}}async function addYear(){const label=prompt('Nouvelle année académique (ex. 2027/2028)');if(!label)return;try{await api('/academic/years',{method:'POST',body:JSON.stringify({label,isActive:true})});state.years=[];toast('Année académique enregistrée.');render()}catch(e){toast(e.message)}}
+async function deleteResource(id){if(!confirm('Supprimer définitivement cette ressource ?'))return;try{await api('/academic/resources/'+id,{method:'DELETE'});toast('Ressource supprimée.');render()}catch(e){toast(e.message)}}
+async function demoteAdmin(id){if(!confirm('Retirer les droits administrateur ?'))return;try{await api('/academic/admins/'+id,{method:'DELETE'});toast('Administrateur rétrogradé.');render()}catch(e){toast(e.message)}}
+function modal(title,body){document.body.insertAdjacentHTML('beforeend',`<div class="modal" id="modal"><div class="modal-card"><div class="modal-head"><strong>${title}</strong><button onclick="closeModal()">×</button></div><div class="modal-body">${body}</div></div></div>`)}function closeModal(){$('#modal')?.remove()}function esc(v){return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+async function render(){if(!state.token){login();return}shell()}render();
+</script>
+
+<script>
+(function(){
+  const ICON={submission:'📥',document:'📄',announcement:'📢',forum:'💬',event:'📅'};
+  const LABEL={submission:'Nouvelle soumission',document:'Nouveau document publié',announcement:'Nouvelle annonce',forum:'Nouvelle discussion',event:'Nouvel événement'};
+  let boot=true,lastKey=localStorage.getItem('enspy_live_activity_key')||'',items=[];
+  const escLive=v=>String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+  function mount(){if(document.getElementById('enspyLiveActivity'))return;document.body.insertAdjacentHTML('beforeend',`<aside class="live-activity" id="enspyLiveActivity"><div class="live-activity-panel"><div class="live-activity-head"><div class="live-activity-title"><i class="live-dot"></i> Activité serveur <small>EN DIRECT</small></div><small id="liveActivityStatus">Connexion…</small></div><div class="live-activity-list" id="liveActivityList"><div class="live-empty">En attente d'une nouvelle activité…</div></div></div></aside>`)}
+  function render(newKeys){const el=document.getElementById('liveActivityList');if(!el)return; if(!items.length){el.innerHTML='<div class="live-empty">Aucune activité récente.</div>';return} el.innerHTML=items.slice(0,8).map(x=>{const key=x.type+':'+x.id+':'+x.createdAt;const fresh=newKeys?.has(key)?' live-new':'';const date=new Date(x.createdAt);const when=isNaN(date)?'':date.toLocaleString('fr-FR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});return `<div class="live-item${fresh}"><div class="live-icon">${ICON[x.type]||'•'}</div><div><strong>${escLive(LABEL[x.type]||'Activité')} · ${escLive(x.title||'Sans titre')}</strong><span>${escLive(x.actor||'Système')} · ${escLive(x.status||'')} · ${when}</span></div></div>`}).join('')}
+  async function poll(){
+    const token=localStorage.getItem('enspy_admin_token');
+    if(!token){return;} mount();
+    try{const r=await fetch('/api/admin/activity',{headers:{Authorization:'Bearer '+token},cache:'no-store'});if(!r.ok)throw new Error();const data=await r.json();const fresh=new Set();const newItems=[];for(const x of (data.items||[])){const key=x.type+':'+x.id+':'+x.createdAt;if(lastKey&&key===lastKey)break;if(!boot)newItems.push(x);if(!boot&&lastKey!==key)fresh.add(key)}if(boot){lastKey=(data.items||[])[0]?((data.items[0].type+':'+data.items[0].id+':'+data.items[0].createdAt)):lastKey;localStorage.setItem('enspy_live_activity_key',lastKey);boot=false}else if(newItems.length){lastKey=(data.items||[])[0]?((data.items[0].type+':'+data.items[0].id+':'+data.items[0].createdAt)):lastKey;localStorage.setItem('enspy_live_activity_key',lastKey)}items=data.items||[];render(newItems.length?fresh:null);document.getElementById('liveActivityStatus').textContent='Connecté · '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});if(newItems.length&&navigator.vibrate)navigator.vibrate([80,40,80]);}
+    catch(e){const s=document.getElementById('liveActivityStatus');if(s)s.textContent='Hors ligne';}
+  }
+  const start=()=>{mount();poll();setInterval(()=>{if(localStorage.getItem('enspy_admin_token'))poll()},5000)}; if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
+})();
+</script>
+
+</body></html>
